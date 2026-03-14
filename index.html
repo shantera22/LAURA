@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday Laura - Sweet 17! 🎀</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-primary: #ec4899;
+            --pink-light: #f472b6;
+            --pink-dark: #db2777;
+            --purple-light: #e9d5ff;
+            --yellow-accent: #fbbf24;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Nunito', sans-serif;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(180deg, #fce7f3 0%, #fdf2f8 50%, #faf5ff 100%);
+            touch-action: pan-y pinch-zoom;
+        }
+
+        /* ============================================
+           HORIZONTAL SCROLL CONTAINER
+           ============================================ */
+        .slider-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .slider-track {
+            display: flex;
+            height: 100%;
+            width: fit-content;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ============================================
+           ANIMASI
+           ============================================ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.8); }
+            70% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(3deg); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes float-up {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ============================================
+           FLOATING ELEMENTS
+           ============================================ */
+        .floating-hearts {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(236, 72, 153, 0.4);
+            animation: float-up linear infinite;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: rgba(251, 191, 36, 0.7);
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        /* ============================================
+           MUSIC CONTROL
+           ============================================ */
+        .music-control {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--pink-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        .music-control.playing {
+            animation: pulse 1s ease-in-out infinite;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            border-color: var(--pink-primary);
+        }
+
+        /* ============================================
+           PROGRESS INDICATOR
+           ============================================ */
+        .progress-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 18px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(236, 72, 153, 0.2);
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(236, 72, 153, 0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: var(--pink-primary);
+            transform: scale(1.3);
+            box-shadow: 0 0 8px rgba(236, 72, 153, 0.5);
+        }
+
+        /* ============================================
+           SLIDE 1: HERO
+           ============================================ */
+        .slide-hero {
+            background: linear-gradient(180deg, rgba(252, 231, 243, 0.9) 0%, rgba(253, 242, 248, 0.95) 100%);
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 90%;
+            z-index: 20;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--pink-light);
+            border-radius: 50px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.2);
+            animation: popIn 0.8s ease-out;
+        }
+
+        .badge span {
+            color: var(--pink-primary);
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .name {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 30%, #fbbf24 60%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: popIn 1s ease-out 0.3s both;
+            text-shadow: 0 4px 20px rgba(236, 72, 153, 0.3);
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: clamp(1.1rem, 3vw, 1.6rem);
+            color: var(--pink-dark);
+            margin-bottom: 15px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            font-weight: 700;
+        }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid var(--pink-light);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease-out 0.9s both;
+            box-shadow: 0 4px 20px rgba(236, 72, 153, 0.15);
+        }
+
+        .date-badge span {
+            color: var(--pink-dark);
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .btn-start {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeInUp 1s ease-out 1.2s both;
+            margin-bottom: 15px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.5);
+        }
+
+        .swipe-hint {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--pink-light);
+            font-size: 0.85rem;
+            font-weight: 600;
+            animation: fadeInUp 1s ease-out 1.5s both, bounce 2s infinite;
+            margin-bottom: 15px;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            animation: fadeInUp 1s ease-out 1.8s both;
+        }
+
+        .tag {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid var(--pink-light);
+            border-radius: 50px;
+            color: var(--pink-primary);
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            transform: scale(1.1);
+            background: var(--pink-primary);
+            color: white;
+        }
+
+        /* ============================================
+           SLIDE 2: GIFTS
+           ============================================ */
+        .slide-gifts {
+            background: linear-gradient(180deg, rgba(233, 213, 255, 0.7) 0%, rgba(252, 231, 243, 0.9) 100%);
+        }
+
+        .slide-content {
+            width: 100%;
+            max-width: 1200px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .section-header {
+            margin-bottom: 25px;
+            flex-shrink: 0;
+        }
+
+        .section-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--pink-light);
+            border-radius: 50px;
+            margin-bottom: 10px;
+        }
+
+        .section-badge span {
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .section-title {
+            font-size: clamp(1.4rem, 3.5vw, 2rem);
+            color: var(--pink-dark);
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .section-desc {
+            color: var(--pink-light);
+            font-size: 0.95rem;
+        }
+
+        .gifts-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 900px;
+            padding: 0 10px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .gift-card {
+            background: white;
+            border-radius: 20px;
+            padding: 20px 15px;
+            text-align: center;
+            border: 2px solid #fce7f3;
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.1);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .gift-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.2);
+        }
+
+        .gift-image {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            transition: all 0.4s ease;
+        }
+
+        .gift-card:hover .gift-image {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .gift-name {
+            font-size: 1rem;
+            color: var(--pink-dark);
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .gift-message {
+            color: var(--pink-light);
+            font-size: 0.8rem;
+            line-height: 1.3;
+        }
+
+        /* ============================================
+           SLIDE 3: WISHES
+           ============================================ */
+        .slide-wishes {
+            background: linear-gradient(180deg, rgba(252, 231, 243, 0.9) 0%, rgba(233, 213, 255, 0.7) 100%);
+        }
+
+        .wishes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+            max-width: 800px;
+            padding: 0 10px;
+            overflow-y: auto;
+            max-height: calc(100vh - 180px);
+        }
+
+        .wish-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px 15px;
+            border: 2px solid #fce7f3;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.08);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            text-align: center;
+        }
+
+        .wish-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.15);
+        }
+
+        .wish-emoji {
+            font-size: 2.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .wish-card:hover .wish-emoji {
+            transform: scale(1.2);
+        }
+
+        .wish-text {
+            color: var(--pink-dark);
+            font-weight: 700;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        /* ============================================
+           SLIDE 4: SPECIAL MESSAGE
+           ============================================ */
+        .slide-message {
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 50%, #a855f7 100%);
+        }
+
+        .message-box {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 35px 30px;
+            text-align: center;
+            color: white;
+            max-width: 90%;
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-box::before,
+        .message-box::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .message-box::before {
+            width: 200px;
+            height: 200px;
+            top: -100px;
+            right: -50px;
+        }
+
+        .message-box::after {
+            width: 150px;
+            height: 150px;
+            bottom: -75px;
+            left: -30px;
+        }
+
+        .float-decor {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .float-decor:nth-child(1) { top: 15px; left: 15px; animation-delay: 0s; }
+        .float-decor:nth-child(2) { top: 20px; right: 20px; animation-delay: 0.5s; }
+        .float-decor:nth-child(3) { bottom: 20px; left: 25px; animation-delay: 1s; }
+
+        .message-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message-badge span {
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .message-title {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 800;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            max-width: 100%;
+            margin: 0 auto 20px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .message-tag {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.25);
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .message-tag:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.05);
+        }
+
+        /* ============================================
+           SLIDE 5: PHOTO GALLERY
+           ============================================ */
+        .slide-photos {
+            background: linear-gradient(180deg, rgba(252, 231, 243, 0.95) 0%, rgba(253, 242, 248, 0.95) 100%);
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            width: 100%;
+            max-width: 700px;
+            padding: 0 10px;
+            overflow-y: auto;
+            max-height: calc(100vh - 180px);
+        }
+
+        .photo-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            aspect-ratio: 1;
+        }
+
+        .photo-item:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+
+        .photo-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* ============================================
+           SLIDE 6: PERSONAL MESSAGE
+           ============================================ */
+        .slide-personal {
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fae8ff 100%);
+        }
+
+        .personal-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+            height: 100%;
+        }
+
+        .personal-photo {
+            flex: 0 0 auto;
+            position: relative;
+            max-width: 280px;
+        }
+
+        .personal-photo-frame {
+            background: white;
+            padding: 10px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(236, 72, 153, 0.3);
+            transform: rotate(-2deg);
+            transition: all 0.4s ease;
+        }
+
+        .personal-photo:hover .personal-photo-frame {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .personal-photo img {
+            width: 100%;
+            max-height: 50vh;
+            border-radius: 15px;
+            display: block;
+            object-fit: cover;
+            aspect-ratio: 3/4;
+        }
+
+        .photo-decoration {
+            position: absolute;
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .photo-decoration:nth-child(1) { top: -20px; left: -10px; animation-delay: 0s; }
+        .photo-decoration:nth-child(2) { top: -15px; right: -20px; animation-delay: 0.5s; }
+        .photo-decoration:nth-child(3) { bottom: -20px; left: 15px; animation-delay: 1s; }
+
+        .personal-message {
+            flex: 1;
+            text-align: left;
+            max-width: 500px;
+            overflow-y: auto;
+            max-height: calc(100vh - 100px);
+            padding-right: 10px;
+        }
+
+        .personal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: linear-gradient(135deg, #ec4899, #f472b6);
+            border-radius: 50px;
+            margin-bottom: 15px;
+            color: white;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        .personal-title {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            color: var(--pink-dark);
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .personal-text {
+            font-size: 0.95rem;
+            color: var(--pink-dark);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 4px solid var(--pink-primary);
+        }
+
+        .personal-text p {
+            margin-bottom: 10px;
+        }
+
+        .personal-signature {
+            font-size: 1rem;
+            color: var(--pink-primary);
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .personal-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .personal-tag {
+            padding: 6px 12px;
+            background: rgba(236, 72, 153, 0.1);
+            border: 2px solid var(--pink-light);
+            border-radius: 50px;
+            color: var(--pink-primary);
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+
+        /* ============================================
+           SLIDE 7: CLOSING
+           ============================================ */
+        .slide-closing {
+            background: linear-gradient(180deg, #fce7f3 0%, #fbcfe8 100%);
+        }
+
+        .closing-content {
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .closing-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .closing-icon {
+            font-size: 2.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .closing-icon:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .closing-title {
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+            color: var(--pink-dark);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .closing-subtitle {
+            color: var(--pink-primary);
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .closing-emojis {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .closing-emoji {
+            font-size: 1.8rem;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        .closing-emoji:nth-child(1) { animation-delay: 0s; }
+        .closing-emoji:nth-child(2) { animation-delay: 0.1s; }
+        .closing-emoji:nth-child(3) { animation-delay: 0.2s; }
+        .closing-emoji:nth-child(4) { animation-delay: 0.3s; }
+        .closing-emoji:nth-child(5) { animation-delay: 0.4s; }
+
+        .closing-line {
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--pink-light), transparent);
+            margin: 0 auto 20px;
+        }
+
+        .closing-text {
+            color: var(--pink-primary);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .closing-date {
+            color: var(--pink-light);
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           SCROLLBAR STYLING
+           ============================================ */
+        .gifts-grid::-webkit-scrollbar,
+        .wishes-grid::-webkit-scrollbar,
+        .photos-grid::-webkit-scrollbar,
+        .personal-message::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .gifts-grid::-webkit-scrollbar-track,
+        .wishes-grid::-webkit-scrollbar-track,
+        .photos-grid::-webkit-scrollbar-track,
+        .personal-message::-webkit-scrollbar-track {
+            background: rgba(236, 72, 153, 0.1);
+            border-radius: 3px;
+        }
+
+        .gifts-grid::-webkit-scrollbar-thumb,
+        .wishes-grid::-webkit-scrollbar-thumb,
+        .photos-grid::-webkit-scrollbar-thumb,
+        .personal-message::-webkit-scrollbar-thumb {
+            background: var(--pink-light);
+            border-radius: 3px;
+        }
+
+        /* ============================================
+           RESPONSIVE - TABLET
+           ============================================ */
+        @media (max-width: 1024px) {
+            .gifts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 600px;
+            }
+
+            .wishes-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 600px;
+            }
+
+            .photos-grid {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 500px;
+            }
+
+            .personal-container {
+                gap: 25px;
+            }
+
+            .personal-photo {
+                max-width: 240px;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE - MOBILE
+           ============================================ */
+        @media (max-width: 768px) {
+            .slide {
+                padding: 15px;
+                padding-top: 60px;
+                padding-bottom: 80px;
+            }
+
+            .progress-bar {
+                bottom: 15px;
+                padding: 8px 15px;
+                gap: 8px;
+            }
+
+            .progress-dot {
+                width: 6px;
+                height: 6px;
+            }
+
+            .music-control {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+            }
+
+            /* Hero */
+            .hero-content {
+                max-width: 95%;
+            }
+
+            .name {
+                font-size: clamp(2rem, 10vw, 3rem);
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .btn-start {
+                padding: 12px 24px;
+                font-size: 0.9rem;
+            }
+
+            .swipe-hint {
+                font-size: 0.8rem;
+            }
+
+            /* Gifts */
+            .gifts-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                max-height: calc(100vh - 220px);
+            }
+
+            .gift-card {
+                padding: 15px 10px;
+            }
+
+            .gift-image {
+                height: 80px;
+            }
+
+            .gift-name {
+                font-size: 0.9rem;
+            }
+
+            .gift-message {
+                font-size: 0.75rem;
+            }
+
+            /* Wishes */
+            .wishes-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                max-height: calc(100vh - 200px);
+            }
+
+            .wish-card {
+                padding: 15px 10px;
+            }
+
+            .wish-emoji {
+                font-size: 1.8rem;
+            }
+
+            .wish-text {
+                font-size: 0.8rem;
+            }
+
+            /* Message */
+            .message-box {
+                padding: 25px 20px;
+                border-radius: 25px;
+            }
+
+            .message-title {
+                font-size: 1.2rem;
+            }
+
+            .message-text {
+                font-size: 0.85rem;
+                line-height: 1.6;
+            }
+
+            .message-tag {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+
+            /* Photos */
+            .photos-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                max-height: calc(100vh - 200px);
+            }
+
+            /* Personal */
+            .personal-container {
+                flex-direction: column;
+                gap: 20px;
+                padding: 10px;
+            }
+
+            .personal-photo {
+                max-width: 200px;
+            }
+
+            .personal-photo img {
+                max-height: 35vh;
+            }
+
+            .photo-decoration {
+                font-size: 1.5rem;
+            }
+
+            .personal-message {
+                text-align: center;
+                max-height: calc(100vh - 50vh - 120px);
+                padding-right: 5px;
+            }
+
+            .personal-text {
+                text-align: left;
+                padding: 15px;
+                font-size: 0.85rem;
+            }
+
+            .personal-title {
+                font-size: 1.2rem;
+            }
+
+            .personal-signature {
+                text-align: center;
+                font-size: 0.9rem;
+            }
+
+            /* Closing */
+            .closing-title {
+                font-size: 1.4rem;
+            }
+
+            .closing-icon {
+                font-size: 2rem;
+            }
+
+            .closing-emoji {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* ============================================
+           RESPONSIVE - SMALL MOBILE
+           ============================================ */
+        @media (max-width: 480px) {
+            .gifts-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .wishes-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .photos-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .gift-image {
+                height: 70px;
+            }
+
+            .name {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Hide main scrollbar */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Audio -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="audio/happy-birthday.mp3" type="audio/mpeg">
+        Browser Anda tidak mendukung audio tag.
+    </audio>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()" title="Klik untuk memutar/menjeda musik">🎵</div>
+
+    <!-- Floating Elements -->
+    <div class="floating-hearts" id="floatingElements"></div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- Slider -->
+    <div class="slider-wrapper" id="sliderWrapper">
+        <div class="slider-track" id="sliderTrack">
+
+            <!-- SLIDE 1: HERO -->
+            <div class="slide slide-hero" data-slide="0">
+                <div class="hero-content">
+                    <div class="badge">
+                        <span class="badge-icon">👑</span>
+                        <span>Sweet 17</span>
+                        <span class="badge-icon">✨</span>
+                    </div>
+                    <h1 class="name">LAURA</h1>
+                    <p class="subtitle">Happy Birthday! 🎂✨</p>
+                    <div class="date-badge">
+                        <span>🎂</span>
+                        <span>15 Maret</span>
+                        <span>🎉</span>
+                    </div>
+                    <button class="btn-start" onclick="startMusic()">
+                        <span>🎧</span>
+                        <span>Mulai Musik</span>
+                        <span>✨</span>
+                    </button>
+                    <div class="swipe-hint">
+                        <span></span>
+                        <span>Geser ke samping</span>
+                        <span>👉</span>
+                    </div>
+                    <div class="tags">
+                        <span class="tag">💕</span>
+                        <span class="tag">✨</span>
+                        <span class="tag">🌸</span>
+                        <span class="tag">🎀</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 2: GIFTS -->
+            <div class="slide slide-gifts" data-slide="1">
+                <div class="slide-content">
+                    <div class="section-header">
+                        <div class="section-badge">
+                            <span>🎁</span>
+                            <span>Hadiah Lucu</span>
+                            <span>💖</span>
+                        </div>
+                        <h2 class="section-title">Teman-Teman Gemes!</h2>
+                        <p class="section-desc">Mereka punya hadiah spesial untukmu, Laura!</p>
+                    </div>
+                    <div class="gifts-grid">
+                        <div class="gift-card">
+                            <img src="images/nailong.png" alt="Nailong" class="gift-image">
+                            <h3 class="gift-name">Nailong</h3>
+                            <p class="gift-message">Hai Laura! Aku Nailong si dinosaurus gemes! 🦕💕</p>
+                        </div>
+                        <div class="gift-card">
+                            <img src="images/panda.png" alt="Panda" class="gift-image">
+                            <h3 class="gift-name">Panda Pinky</h3>
+                            <p class="gift-message">Selamat ulang tahun! Ini hadiah spesial untukmu! 🎁</p>
+                        </div>
+                        <div class="gift-card">
+                            <img src="images/bunny.png" alt="Bunny" class="gift-image">
+                            <h3 class="gift-name">Bunny Bloom</h3>
+                            <p class="gift-message">Semoga harimu penuh kebahagiaan! 🐰✨</p>
+                        </div>
+                        <div class="gift-card">
+                            <img src="images/cat.png" alt="Cat" class="gift-image">
+                            <h3 class="gift-name">Kitty Cupcake</h3>
+                            <p class="gift-message">Sweet 17! Nikmati hari spesialmu! 🧁</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 3: WISHES -->
+            <div class="slide slide-wishes" data-slide="2">
+                <div class="slide-content">
+                    <div class="section-header">
+                        <div class="section-badge" style="background: #c084fc;">
+                            <span>⭐</span>
+                            <span>Harapan Manis</span>
+                        </div>
+                        <h2 class="section-title">Doa untuk Laura 💖</h2>
+                    </div>
+                    <div class="wishes-grid">
+                        <div class="wish-card">
+                            <span class="wish-emoji">🎂</span>
+                            <p class="wish-text">Semoga panjang umur dan sehat selalu!</p>
+                        </div>
+                        <div class="wish-card">
+                            <span class="wish-emoji">✨</span>
+                            <p class="wish-text">Impian dan cita-citamu terwujud!</p>
+                        </div>
+                        <div class="wish-card">
+                            <span class="wish-emoji">💕</span>
+                            <p class="wish-text">Dikelilingi orang-orang yang sayang kamu!</p>
+                        </div>
+                        <div class="wish-card">
+                            <span class="wish-emoji">🌸</span>
+                            <p class="wish-text">Hari-harimu penuh bunga dan tawa!</p>
+                        </div>
+                        <div class="wish-card">
+                            <span class="wish-emoji">🎉</span>
+                            <p class="wish-text">Sweet 17 yang luar biasa!</p>
+                        </div>
+                        <div class="wish-card">
+                            <span class="wish-emoji">💖</span>
+                            <p class="wish-text">Selalu bahagia dan tersenyum!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 4: SPECIAL MESSAGE -->
+            <div class="slide slide-message" data-slide="3">
+                <div class="message-box">
+                    <span class="float-decor">💖</span>
+                    <span class="float-decor">⭐</span>
+                    <span class="float-decor">✨</span>
+                    <div class="message-badge">
+                        <span>🎵</span>
+                        <span>Pesan Spesial</span>
+                        <span>💌</span>
+                    </div>
+                    <h3 class="message-title">Happy Sweet 17, Laura! 🎂✨</h3>
+                    <p class="message-text">
+                        Selamat ulang tahun yang ke-17! Semoga tahun ini membawa banyak kebahagiaan, 
+                        tawa, dan momen indah. Kamu sudah menjadi pribadi yang luar biasa, 
+                        dan aku yakin masa depanmu akan semakin cerah! 
+                        Tetap jadi Laura yang lucu, imut, dan menyenangkan! 💕
+                    </p>
+                    <div class="message-tags">
+                        <span class="message-tag">🎉 Sweet 17</span>
+                        <span class="message-tag">💖 Lovely</span>
+                        <span class="message-tag">✨ Shine Bright</span>
+                        <span class="message-tag">🌸 Blossom</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 5: PHOTO GALLERY -->
+            <div class="slide slide-photos" data-slide="4">
+                <div class="slide-content">
+                    <div class="section-header">
+                        <div class="section-badge">
+                            <span>📸</span>
+                            <span>LAURA ANAK BAPA</span>
+                        </div>
+                        <h2 class="section-title">Cute laura 💕</h2>
+                    </div>
+                    <div class="photos-grid">
+                        <div class="photo-item">
+                            <img src="images/img1.jpg" alt="Laura 1">
+                        </div>
+ 
+
+            <!-- SLIDE 6: PERSONAL MESSAGE -->
+            <div class="slide slide-personal" data-slide="5">
+                <div class="personal-container">
+                    <div class="personal-photo">
+                        <span class="photo-decoration">🎀</span>
+                        <span class="photo-decoration">💖</span>
+                        <span class="photo-decoration">✨</span>
+                        <div class="personal-photo-frame">
+                            <img src="images/img.jpeg" alt="Your Photo">
+                        </div>
+                    </div>
+                    <div class="personal-message">
+                        <div class="personal-badge">
+                            <span>💌</span>
+                            <span>Dari SAMUEL</span>
+                        </div>
+                        <h2 class="personal-title">Happy Birthday, Laura! 🎂</h2>
+                        <div class="personal-text">
+                            <p>Hai Laura! 🌸</p>
+                            <p>
+                                Selamat ulang tahun yang ke-17! Di hari spesial ini, aku ingin mengucapkan 
+                                betapa beruntungnya aku punya teman sepertimu. Semoga di usia yang baru ini, 
+                                semua impianmu tercapai dan kamu selalu dikelilingi kebahagiaan.
+                            </p>
+                            <p>
+                                Tetap jadi dirimu yang ceria, baik hati, dan menginspirasi. 
+                                Aku bangga punya teman seperti kamu! 💕
+                            </p>
+                        </div>
+                        <div class="personal-signature">— Dengan sayang, [Nama Kamu] 💖</div>
+                        <div class="personal-tags">
+                            <span class="personal-tag">🎉 Best Wishes</span>
+                            <span class="personal-tag">💕 Forever Friends</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SLIDE 7: CLOSING -->
+            <div class="slide slide-closing" data-slide="6">
+                <div class="closing-content">
+                    <div class="closing-icons">
+                        <span class="closing-icon">💖</span>
+                        <span class="closing-icon">⭐</span>
+                        <span class="closing-icon">💖</span>
+                    </div>
+                    <h2 class="closing-title">Happy Birthday, Laura! 🎂</h2>
+                    <p class="closing-subtitle">Sweet 17 & Always Loved 💕</p>
+                    <div class="closing-emojis">
+                        <span class="closing-emoji">🎀</span>
+                        <span class="closing-emoji">🌸</span>
+                        <span class="closing-emoji">💖</span>
+                        <span class="closing-emoji">✨</span>
+                        <span class="closing-emoji">🎂</span>
+                    </div>
+                    <div class="closing-line"></div>
+                    <p class="closing-text">Dibuat dengan 💖 untuk Laura yang lucu</p>
+                    <p class="closing-date">15 Maret - Sweet 17</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Variables
+        let currentSlide = 0;
+        const totalSlides = 7;
+        let isPlaying = false;
+        const bgMusic = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const sliderTrack = document.getElementById('sliderTrack');
+        const sliderWrapper = document.getElementById('sliderWrapper');
+        
+        let isDragging = false;
+        let startX = 0;
+        let currentTranslate = 0;
+        let prevTranslate = 0;
+
+        // Create progress dots
+        function createProgressDots() {
+            const progressBar = document.getElementById('progressBar');
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+                dot.onclick = () => goToSlide(i);
+                progressBar.appendChild(dot);
+            }
+        }
+
+        // Create floating elements
+        function createFloatingElements() {
+            const container = document.getElementById('floatingElements');
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '💖';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (12 + Math.random() * 16) + 'px';
+                heart.style.animationDuration = (10 + Math.random() * 6) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(heart);
+            }
+            
+            for (let i = 0; i < 10; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.innerHTML = '✨';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.fontSize = (10 + Math.random() * 12) + 'px';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        // Music functions
+        function startMusic() {
+            if (!isPlaying) {
+                bgMusic.volume = 0.5;
+                bgMusic.play()
+                    .then(() => {
+                        isPlaying = true;
+                        musicBtn.classList.add('playing');
+                        musicBtn.innerHTML = '🔊';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        }
+
+        function toggleMusic() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                musicBtn.classList.remove('playing');
+                musicBtn.innerHTML = '🎵';
+            } else {
+                bgMusic.volume = 0.5;
+                bgMusic.play()
+                    .then(() => {
+                        isPlaying = true;
+                        musicBtn.classList.add('playing');
+                        musicBtn.innerHTML = '🔊';
+                    })
+                    .catch(error => {
+                        alert('Klik "Mulai Musik" terlebih dahulu');
+                    });
+            }
+        }
+
+        // Slider functions
+        function updateSlider() {
+            currentTranslate = currentSlide * -window.innerWidth;
+            prevTranslate = currentTranslate;
+            sliderTrack.style.transform = `translateX(${currentTranslate}px)`;
+            
+            // Update dots
+            const dots = document.querySelectorAll('.progress-dot');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlider();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlider();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+        }
+
+        // Touch events for swipe
+        sliderWrapper.addEventListener('touchstart', touchStart, { passive: true });
+        sliderWrapper.addEventListener('touchend', touchEnd, { passive: true });
+        sliderWrapper.addEventListener('touchmove', touchMove, { passive: true });
+
+        // Mouse events for desktop drag
+        sliderWrapper.addEventListener('mousedown', touchStart);
+        sliderWrapper.addEventListener('mouseup', touchEnd);
+        sliderWrapper.addEventListener('mouseleave', () => {
+            if (isDragging) touchEnd();
+        });
+        sliderWrapper.addEventListener('mousemove', touchMove);
+
+        function touchStart(event) {
+            isDragging = true;
+            startX = getPositionX(event);
+            sliderTrack.style.transition = 'none';
+        }
+
+        function touchMove(event) {
+            if (isDragging) {
+                const currentX = getPositionX(event);
+                const diff = currentX - startX;
+                currentTranslate = prevTranslate + diff;
+                sliderTrack.style.transform = `translateX(${currentTranslate}px)`;
+            }
+        }
+
+        function touchEnd() {
+            isDragging = false;
+            sliderTrack.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            
+            const movedBy = currentTranslate - prevTranslate;
+            
+            // Threshold untuk swipe
+            if (movedBy < -80 && currentSlide < totalSlides - 1) {
+                currentSlide++;
+            } else if (movedBy > 80 && currentSlide > 0) {
+                currentSlide--;
+            }
+            
+            updateSlider();
+        }
+
+        function getPositionX(event) {
+            return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+        }
+
+        // Wheel event for mouse scroll
+        let wheelTimeout;
+        sliderWrapper.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            clearTimeout(wheelTimeout);
+            wheelTimeout = setTimeout(() => {
+                if (e.deltaY > 0 || e.deltaX > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }, 50);
+        }, { passive: false });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            updateSlider();
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createProgressDots();
+            createFloatingElements();
+            updateSlider();
+        });
+    </script>
+</body>
+</html>
